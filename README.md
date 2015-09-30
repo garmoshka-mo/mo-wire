@@ -26,9 +26,9 @@ Callbacks:
 
 ## Methods
 
-- resolve(...) - triggers success callback, any amount of arguments
-- reject(...) - triggers failure callback, any amount of arguments
-- branch() - creates new Wire, which copies failures to parent
+- resolve(...) - triggers `success`, any amount of arguments
+- reject(...) - triggers `failure`, any amount of arguments
+- branch() - creates new Wire, which translates failure to parent
 
 `resolve` and `reject` will trigger corresponding callback only once.
 
@@ -63,18 +63,26 @@ Need to cover code with tests
 
 ## Multi-wiring
 
-todo: branch({
- passFailure: true,
+make `branch` to accept argument, which can be object or string
+
+object:
+````
+{
+ passFailure: true (default),
  passSuccess: false (default)
- / 'alone' (single, any)
- / 'wait brothers' (brothers, sisters, neighbors, all, together
+ / 'selfish' (alone, single, any)
+ / 'friendly' ('wait brothers', brothers, sisters, neighbors, all, together)
 })
+````
 
-processURL(w.branch({passSuccess: 'with brothers'}), url);
+Example: `processURL(w.branch({passSuccess: 'with brothers'}), url);`
 
+string:
+````
 branch('friendly') = { passFailure: true, passSuccess: 'friendly' }
 branch('selfish') = { passFailure: true, passSuccess: 'selfish' }
 branch('alarm') = { passFailure: true, passSuccess: false }
+````
 
 # Multi-callbacks
 
