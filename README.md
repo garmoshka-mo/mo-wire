@@ -1,9 +1,11 @@
 # mo-wire
 
+````
  l
   l
    l
 mo-wire
+````
 
 Wire() - is alternative for js Promise.
 Wire is defined outside of function and then passed into.
@@ -24,16 +26,14 @@ Callbacks:
 
 ## Methods
 
-- resolve(...) - triggers success callback
-- reject(...) - triggers failure callback
+- resolve(...) - triggers success callback, any amount of arguments
+- reject(...) - triggers failure callback, any amount of arguments
 - branch() - creates new Wire, which copies failures to parent
 
-Notes:
-- ... - means any amount of arguments
-- resolve and reject will trigger callback only once.
-If reject triggered failure, resolve won't do anything.
+`resolve` and `reject` will trigger corresponding callback only once.
 
-But you can call reject after resolve, for example:
+If `reject` already called, `resolve` won't do anything.
+But you can call `reject` after `resolve`, for example:
 
 ````
 var l = new Wire();
@@ -43,9 +43,10 @@ l.success(function(result){
         return l.reject({ dealWithIt: result });
     use(result);
 });
-l.failure(function(err){
-    washOff(err);
+l.failure(function(data){
+    washOff(data);
 });
+````
 
 ## Constructor options:
 
