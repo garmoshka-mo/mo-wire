@@ -1,12 +1,19 @@
 # mo-wire
 
- l
+````
   l
    l
+    l
 mo-wire
+````
 
-Wire() - is alternative for js Promise.
-Wire is defined outside of function and then passed into.
+Wire() - is alternative for js Promise().
+Wire defined outside of function and then passed into.
+
+Purpose: 
+
+1. reduces code of asyc functions 
+1. metaphor of "thrown wire" is easier for understanding, than "chaining" which becomes a bit complicated at points, when promises returned to error/success handlers and passed to following ones.
 
 ## Example
 
@@ -46,16 +53,14 @@ So you can pass it to functions, which awaits for callback - and it will work.
 
 ## Methods
 
-- resolve(...) - triggers success callback
-- reject(...) - triggers failure callback
-- branch() - creates new Wire, which copies failures to parent
+- resolve(...) - triggers `success`, any amount of arguments
+- reject(...) - triggers `failure`, any amount of arguments
+- branch() - creates new Wire, which translates failure to parent
 
-Notes:
-- ... - means any amount of arguments
-- resolve and reject will trigger callback only once.
-If reject triggered failure, resolve won't do anything.
+`resolve` and `reject` will trigger corresponding callback only once.
 
-But you can call reject after resolve, for example:
+If `reject` already called, `resolve` won't do anything.
+But you can call `reject` after `resolve`, for example:
 
 ````
 var l = new Wire();
@@ -65,9 +70,10 @@ l.success(function(result){
         return l.reject({ dealWithIt: result });
     use(result);
 });
-l.failure(function(err){
-    washOff(err);
+l.failure(function(data){
+    washOff(data);
 });
+````
 
 ## Constructor options:
 
@@ -106,18 +112,26 @@ For now only 'parallel' is implemented
 
 ## Multi-wiring
 
-todo: branch({
- passFailure: true,
+make `branch` to accept argument, which can be object or string
+
+object:
+````
+{
+ passFailure: true (default),
  passSuccess: false (default)
- / 'alone' (single, any)
- / 'wait brothers' (brothers, sisters, neighbors, all, together
+ / 'selfish' (alone, single, any)
+ / 'friendly' ('wait brothers', brothers, sisters, neighbors, all, together)
 })
+````
 
-processURL(w.branch({passSuccess: 'with brothers'}), url);
+Example: `processURL(w.branch({passSuccess: 'with brothers'}), url);`
 
+string:
+````
 branch('friendly') = { passFailure: true, passSuccess: 'friendly' }
 branch('selfish') = { passFailure: true, passSuccess: 'selfish' }
 branch('alarm') = { passFailure: true, passSuccess: false }
+````
 
 # Multi-callbacks
 
