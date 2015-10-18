@@ -1,28 +1,48 @@
+module.exports = Wire;
 /*
 options = {
-    outputFailures: 'none' / 'uncaught' (default) / 'all'
+  branches: 'parallel' / 'series' / etc...
+  resultArg: 1
+  outputFailures: 'none' / 'uncaught' (default) / 'all'
 }
 */
-function Wire(options) {
+function Wire(customOptions) {
 
-    if (!options) options = {};
+    var options = {};
+
+    if (Wire.defaults)
+        Object.keys(Wire.defaults)
+            .map(function (k) {
+                options[k] = Wire.defaults[k];
+            });
+
+    if (customOptions)
+        Object.keys(customOptions)
+            .map(function (k) {
+                options[k] = customOptions[k];
+            });
+
     if (!options.outputFailures)
         options.outputFailures = 'uncaught';
 
-    var self = this;
+    var self = function(){
+        call(self.resolve, arguments);
+    };
+
     var successResults, successCallback;
     var failureResults, failureCallback;
     var isTerminated = false;
 
-    this.resolve = function() {
+    self.resolve = function() {
         if (isTerminated) return;
 
-        successResults = arguments;
+        successResults = !isNaN(options['resultArg']) ?
+            [arguments[options['resultArg']]] : arguments;
 
-        if (successCallback) call(successCallback, arguments);
+        if (successCallback) call(successCallback, successResults);
     };
 
-    this.success = function(callback) {
+    self.success = function(callback) {
         if (successResults)
             call(callback, successResults);
         else
@@ -30,7 +50,7 @@ function Wire(options) {
     };
 
 
-    this.reject = function() {
+    self.reject = function() {
         if (isTerminated) return;
         isTerminated = true;
 
@@ -43,7 +63,7 @@ function Wire(options) {
             call(console.error, arguments);
     };
 
-    this.failure = function(callback) {
+    self.failure = function(callback) {
         if (failureResults)
             call(callback, failureResults);
         else
@@ -55,12 +75,32 @@ function Wire(options) {
     }
 
 
-    this.branch = function() {
-        var l = new Wire();
+    var branches = {}, branchesResults = {};
+    self.branch = function(key, options) {
+        if (branches[key]) return branches[key];
+
+        var l = new Wire(options);
+        branches[key] = l;
         l.failure(self.failure);
+        l.success(checkBranchesCompletion);
+
+        function checkBranchesCompletion() {
+
+            branchesResults[key] = arguments.length == 1 ?
+                arguments[0] : arguments;
+
+            var done = Object.keys(branches)
+                .reduce(function (previousValue, k) {
+                    return previousValue
+                        && typeof branchesResults[k] !== 'undefined';
+                }, true);
+
+            if (done)
+                self.resolve(branchesResults);
+        }
+
         return l;
     };
 
+    return self;
 }
-
-module.exports = Wire;

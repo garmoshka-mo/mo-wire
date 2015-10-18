@@ -12,15 +12,37 @@ Wire is defined outside of function and then passed into.
 
 Wire:
 ````
+var Wire = require('../mo-wire/mo-wire');
+Wire.defaults = { resultArg: 0 };
+
+function analyze(post_id, done) {
+    var l = new Wire('parallel');
+
+    posts.getPost(post_id, l.branch('origin'));
+    bonds.getBoundPosts(post_id, l.branch('bonds'));
+
+    l.success(done);
+}
 ````
 
 Promises:
 ````
+Enthusiasts are welcomed to write this example using promises
 ````
 
-Callbacks:
+Async:
 ````
+Enthusiasts are welcomed to write this example using async
 ````
+
+## Wire instance is function
+
+You can call wire instance itself - it is a function. This is equal:
+````
+l()
+l.resolve()
+````
+So you can pass it to functions, which awaits for callback - and it will work.
 
 ## Methods
 
@@ -51,14 +73,36 @@ l.failure(function(err){
 
 Constructor has optinal parameter: `new Wire(options)`
 
-options: 
+options {}: 
+- branches: 'parallel'
+- resultArg: 1 - Will take argument with index 1 from resolve as result
 - outputFailures: 'none' / 'uncaught' (default) / 'all'
+
+`options` can be string - then it is parsed as options.branches
+
+## Wire.defaults = to set global default options
+
+For example, when architecture of project uses
+callbacks `function (err, result)` we are able to omit passing `{ resultArg: 1 }` for each branch,
+and just set for whole library to await argument by default from exact place using:
+````
+var Wire = require('mo-wire');
+Wire.defaults = { resultArg: 1 };
+````
 
 # ToDo
 
 ## Tests
 
 Need to cover code with tests
+
+## Branches execution order
+
+````
+new Wire('parallel' / 'series' / etc...)
+````
+
+For now only 'parallel' is implemented
 
 ## Multi-wiring
 
