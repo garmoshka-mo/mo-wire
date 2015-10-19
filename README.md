@@ -7,13 +7,15 @@
 mo-wire
 ````
 
-Wire() - is alternative for js Promise().
+Is alternative for js promises.
 Wire defined outside of function and then passed into.
 
 Purpose: 
 
 1. reduces code of asyc functions 
-1. metaphor of "thrown wire" is easier for understanding, than "chaining" which becomes a bit complicated at points, when promises returned to error/success handlers and passed to following ones.
+1. metaphor of "thrown wire" is easier for understanding, 
+than "chaining" which becomes a bit complicated at points, 
+when promises returned to error/success handlers and passed to following ones.
 
 ## Install
 
@@ -36,7 +38,7 @@ function preparePostData(postId, done) {
     posts.getPost(postId, l.branch('article'));
     comments.getPostComments(postId, l.branch('comments'));
 
-    l.success(done);
+    l.success(done); // will call done({ articles: ..., comments: ... });
 }
 ````
 
