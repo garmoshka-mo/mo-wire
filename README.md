@@ -29,7 +29,7 @@ npm i mo-wire --save
 
 Wire:
 
-![Wire example](https://cloud.githubusercontent.com/assets/2452269/10574962/fc3a972c-7661-11e5-9bfd-4eee7bce9a6b.jpg)
+![Wire example](https://cloud.githubusercontent.com/assets/2452269/10575034/772343bc-7662-11e5-9523-174ce6e9a792.jpg)
 
 Promises:
 ````
