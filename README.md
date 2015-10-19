@@ -28,19 +28,8 @@ npm i mo-wire --save
 ## Parallel
 
 Wire:
-````
-var Wire = require('../mo-wire/mo-wire');
-Wire.defaults = { resultArg: 1 };
 
-function preparePostData(postId, done) {
-    var l = new Wire();
-
-    posts.getPost(postId, l.branch('article'));
-    comments.getPostComments(postId, l.branch('comments'));
-
-    l.success(done); // will call done({ article: ..., comments: ... });
-}
-````
+![Wire example](https://cloud.githubusercontent.com/assets/2452269/10574962/fc3a972c-7661-11e5-9bfd-4eee7bce9a6b.jpg)
 
 Promises:
 ````
