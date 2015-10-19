@@ -141,17 +141,22 @@ require('mo-wire').defaults = {
 
 Enthusiasts are welcomed to participate project:
 
-## Tests
-
-Would be nice to cover code with tests
-
-## options.branches
+## options
  
-list of branch names to predefine - this is not implemented actually
+- .errorArg - to set reaction to callback(err, ...)
+- .branches - list of branch names to predefine - this is not implemented actually
 
 ## Multi-callbacks
 
 Array of failure / success handlers instead of single var
+
+## Promise wrappers
+
+For convenient attaching to promise-based code
+
+## Tests
+
+Would be nice to cover code with tests
 
 # License
 
