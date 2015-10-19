@@ -36,7 +36,7 @@ function Wire(customOptions) {
     self.resolve = function() {
         if (isTerminated) return;
 
-        successResults = !isNaN(options['resultArg']) ?
+        successResults = !isUndefined(options['resultArg']) ?
             [arguments[options['resultArg']]] : arguments;
 
         if (successCallback) call(successCallback, successResults);
@@ -74,13 +74,21 @@ function Wire(customOptions) {
         func.apply(func, agrs);
     }
 
+    function isUndefined(x) {
+        return typeof x === 'undefined';
+    }
 
     var branches = {}, branchesResults = {};
     self.branch = function(key, options) {
         if (branches[key]) return branches[key];
 
+        if (self[key]) {
+            console.error('Conflict with Wire\'s method name: ' + key);
+            throw 'Conflict with Wire\'s method name: ' + key;
+        }
+
         var l = new Wire(options);
-        branches[key] = l;
+        self[key] = branches[key] = l;
         l.failure(self.failure);
         l.success(checkBranchesCompletion);
 
@@ -92,7 +100,7 @@ function Wire(customOptions) {
             var done = Object.keys(branches)
                 .reduce(function (previousValue, k) {
                     return previousValue
-                        && typeof branchesResults[k] !== 'undefined';
+                        && !isUndefined(branchesResults[k]);
                 }, true);
 
             if (done)
@@ -100,6 +108,38 @@ function Wire(customOptions) {
         }
 
         return l;
+    };
+
+    self.branches = function () {
+        var arg = arguments;
+        Object.keys(arg).map(function (key) {
+            self.branch(arg[key]);
+        });
+    };
+
+    self.mapInSeries = function(arr, func) {
+
+        var atTheEnd = self.resolve;
+        var results = [], counter = 0;
+        arr = arr.slice();
+
+        self.next = self.resolve = function() {
+            if (arguments.length == 1)
+                results.push(arguments[0]);
+            else if(!isUndefined(options['resultArg']))
+                results.push(arguments[options['resultArg']]);
+            else
+                results.push(arguments);
+            doStep();
+        };
+
+        function doStep() {
+            var x = arr.shift();
+            if (x) func(x, counter++);
+            else atTheEnd(results);
+        }
+
+        doStep();
     };
 
     return self;

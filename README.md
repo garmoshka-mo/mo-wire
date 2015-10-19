@@ -15,7 +15,9 @@ Purpose:
 1. reduces code of asyc functions 
 1. metaphor of "thrown wire" is easier for understanding, than "chaining" which becomes a bit complicated at points, when promises returned to error/success handlers and passed to following ones.
 
-## Example
+# Examples
+
+## Parallel
 
 Wire:
 ````
@@ -41,6 +43,10 @@ Async:
 ````
 Enthusiasts are welcomed to write this example using async
 ````
+
+## Map
+
+
 
 ## Wire instance is function
 
@@ -92,8 +98,9 @@ For example, when architecture of project uses
 callbacks `function (err, result)` we are able to omit passing `{ resultArg: 1 }` for each branch,
 and just set for whole library to await argument by default from exact place using:
 ````
-var Wire = require('mo-wire');
-Wire.defaults = { resultArg: 1 };
+require('mo-wire').defaults = { 
+    resultArg: 1 
+};
 ````
 
 # ToDo
