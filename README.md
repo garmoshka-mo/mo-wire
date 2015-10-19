@@ -150,6 +150,14 @@ Enthusiasts are welcomed to participate project:
 
 Array of failure / success handlers instead of single var
 
+## map
+
+- let barnch() without arguments to create new sequential branches
+and use it in map iterations - it will be safe for cases, 
+when some iterator would call callback 2 times.
+Right now it will push wrong data to results.
+- Docs for map & next()
+
 ## Promise wrappers
 
 For convenient attaching to promise-based code
