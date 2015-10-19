@@ -92,13 +92,13 @@ So you can pass wire to functions, which awaits for traditional callback - and i
 
 ## Wire methods
 
-- resolve(...) - triggers `success`, with any amount of arguments
-- reject(...) - triggers `failure`, with any amount of arguments
-- branch('name', options) - creates new Wire, which translates failure to parent immediately
+- `resolve(...)` - triggers `success`, with any amount of arguments
+- `reject(...)` - triggers `failure`, with any amount of arguments
+- `branch('name', options)` - creates new Wire, which translates failure to parent immediately
 or accumulates resolutions of all branches to single parent's success. Second argument is options for this new wire (optional)
-- branches('branch1', 'branch2', ...) - to predefine list of branches at one step
-- success(function() {})
-- failure(function() {}) 
+- `branches('branch1', 'branch2', ...)` - to predefine list of branches at one step
+- `success(function() {})`
+- `failure(function() {})` 
 
 
 `resolve` and `reject` will trigger corresponding callback only once.
