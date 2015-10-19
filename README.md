@@ -38,7 +38,7 @@ function preparePostData(postId, done) {
     posts.getPost(postId, l.branch('article'));
     comments.getPostComments(postId, l.branch('comments'));
 
-    l.success(done); // will call done({ articles: ..., comments: ... });
+    l.success(done); // will call done({ article: ..., comments: ... });
 }
 ````
 
@@ -54,8 +54,11 @@ Enthusiasts are welcomed to write this example using async
 
 ## Pretty agile usage of branches
 
-Note: you can predefine full list of branches with `branches` method.
+Notes:
+- you can predefine full list of branches with `branches` method.
 This will ensure, that `success` won't trigger before all of them resolved.
+- once you created some branch - you can access it later at any point
+either with `l.branch('some')` or `l['some']`
 
 ````
 var l = new Wire();
@@ -64,8 +67,8 @@ l.branches('article', 'comments');
 posts.getPostFromCacheOrDB(postId, l['article']);
 
 bonds.getPostComments(postId, function (err, rows) {
-    var processedRows = rows.map(function (r) { ... });
-    l['bonds'].resolve(processedRows);
+    var processedComments = rows.map(function (r) { ... });
+    l['comments'].resolve(processedComments);
 });
 
 l.success(...);
