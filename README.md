@@ -59,7 +59,7 @@ This will ensure, that `success` won't trigger before all of them resolved.
 var l = new Wire();
 l.branches('article', 'comments');
 
-posts.getPost(postId, l['article']);
+posts.getPostFromCacheOrDB(postId, l['article']);
 
 bonds.getPostComments(postId, function (err, rows) {
     var processedRows = rows.map(function (r) { ... });
@@ -81,21 +81,25 @@ l.success(function(results) {
 });
 ````
 
-## Wire instance is function
+## Wire instance - is function
 
 You can call wire instance itself - it is a function. This is equal:
 ````
 l()
 l.resolve()
 ````
-So you can pass wire to functions, which awaits for callback - and it will work.
+So you can pass wire to functions, which awaits for traditional callback - and it will work.
 
 ## Wire methods
 
-- resolve(...) - triggers `success`, any amount of arguments
-- reject(...) - triggers `failure`, any amount of arguments
-- branch() - creates new Wire, which translates failure to parent
-- branches(...) - to predefine list of branches at one step
+- resolve(...) - triggers `success`, with any amount of arguments
+- reject(...) - triggers `failure`, with any amount of arguments
+- branch('name') - creates new Wire, which translates failure to parent immediately
+or accumulates resolutions of all branches to single parent's success
+- branches('branch1', 'branch2', ...) - to predefine list of branches at one step
+- success(function() {})
+- failure(function() {}) 
+
 
 `resolve` and `reject` will trigger corresponding callback only once.
 
