@@ -1,8 +1,8 @@
 module.exports = Wire;
 /*
 options = {
-  branches: 'parallel' / 'series' / etc...
-  resultArg: 1
+  branches: list of branches
+  resultArg: 1 - Will take argument with index 1 from resolve as result
   outputFailures: 'none' / 'uncaught' (default) / 'all'
 }
 */
@@ -119,7 +119,7 @@ function Wire(customOptions) {
 
     self.mapInSeries = function(arr, func) {
 
-        var atTheEnd = self.resolve;
+        var done = self.resolve;
         var results = [], counter = 0;
         arr = arr.slice();
 
@@ -136,7 +136,7 @@ function Wire(customOptions) {
         function doStep() {
             var x = arr.shift();
             if (x) func(x, counter++);
-            else atTheEnd(results);
+            else done(results);
         }
 
         doStep();

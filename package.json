@@ -1,0 +1,19 @@
+{
+  "name": "mo-wire",
+  "version": "1.0.0",
+  "description": "alternative for js promises. Wire defined outside of function and then passed into",
+  "main": "mo-wire.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garmoshka-mo/mo-wire.git"
+  },
+  "author": "garmoshka-mo <dan@dub.ink> (http://garmoshka-mo.blogspot.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/garmoshka-mo/mo-wire/issues"
+  },
+  "homepage": "https://github.com/garmoshka-mo/mo-wire#readme"
+}
