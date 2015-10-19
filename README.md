@@ -150,6 +150,8 @@ require('mo-wire').defaults = {
 
 # ToDo
 
+Enthusiasts are welcomed to participate project:
+
 ## Tests
 
 Would be nice to cover code with tests
