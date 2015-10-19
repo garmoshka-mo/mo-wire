@@ -94,8 +94,8 @@ So you can pass wire to functions, which awaits for traditional callback - and i
 
 - resolve(...) - triggers `success`, with any amount of arguments
 - reject(...) - triggers `failure`, with any amount of arguments
-- branch('name') - creates new Wire, which translates failure to parent immediately
-or accumulates resolutions of all branches to single parent's success
+- branch('name', options) - creates new Wire, which translates failure to parent immediately
+or accumulates resolutions of all branches to single parent's success. Second argument is options for this new wire (optional)
 - branches('branch1', 'branch2', ...) - to predefine list of branches at one step
 - success(function() {})
 - failure(function() {}) 
@@ -135,7 +135,7 @@ options {}:
 ## Wire.defaults = to set global default options
 
 For example, when architecture of project uses
-such callbacks: `function (err, result)` - we are able to omit passing `{ resultArg: 1 }` for each branch,
+such callbacks: `function (err, result)` - we are able to omit passing `branch('bla', { resultArg: 1 })` for each branch,
 and just set for whole library to await argument from exact place:
 ````
 require('mo-wire').defaults = { 
