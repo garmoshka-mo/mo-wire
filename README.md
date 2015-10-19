@@ -112,8 +112,8 @@ var l = new Wire();
 doSomethingAsync(l);
 
 l.success(function(result){
-    if (result == 'crap')
-        return l.reject({ dealWithIt: result });
+    if (isCrap(result))
+        return l.reject(result);
 
     ...
 });
@@ -128,15 +128,15 @@ l.failure(function(data){
 Constructor has optinal parameter: `new Wire(options)`
 
 options {}: 
-- branches: list of branches
-- resultArg: 1 - Will take argument with index 1 from `resolve(...)` as result
+- branches: list of branch names to predefine
+- resultArg: 1 - Will take only argument with index 1 from `resolve(...)` as result
 - outputFailures: 'none' / 'uncaught' (default) / 'all'
 
 ## Wire.defaults = to set global default options
 
 For example, when architecture of project uses
-callbacks `function (err, result)` we are able to omit passing `{ resultArg: 1 }` for each branch,
-and just set for whole library to await argument by default from exact place using:
+such callbacks: `function (err, result)` - we are able to omit passing `{ resultArg: 1 }` for each branch,
+and just set for whole library to await argument from exact place:
 ````
 require('mo-wire').defaults = { 
     resultArg: 1 
@@ -147,9 +147,13 @@ require('mo-wire').defaults = {
 
 ## Tests
 
-Need to cover code with tests
+Would be nice to cover code with tests
 
-# Multi-callbacks
+## options.branches
+ 
+list of branch names to predefine - this is not implemented actually
+
+## Multi-callbacks
 
 Array of failure / success handlers instead of single var
 

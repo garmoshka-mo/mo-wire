@@ -1,11 +1,5 @@
 module.exports = Wire;
-/*
-options = {
-  branches: list of branches
-  resultArg: 1 - Will take argument with index 1 from resolve as result
-  outputFailures: 'none' / 'uncaught' (default) / 'all'
-}
-*/
+
 function Wire(customOptions) {
 
     var options = {};
