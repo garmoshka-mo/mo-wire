@@ -63,6 +63,19 @@ bonds.getPostComments(postId, function (err, rows) {
 l.success(...);
 ````
 
+## mediator
+
+````
+function getDataFromUrl(url, l) {
+    download(url, l.mediator(formatResult));
+    function formatResult(result) {
+         l.resolve(body.title + ': ' + body.description);
+    }
+}
+````
+
+- All rejections which may happen inside of download() - will be thrown to `l`
+
 ## mapInSeries
 
 ````
