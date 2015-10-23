@@ -66,8 +66,8 @@ l.success(...);
 ## mediator
 
 ````
-function getDataFromUrl(url, l) {
-    download(url, l.mediator(formatResult));
+function getDataFromUrl(l, url) {
+    download(l.mediator(formatResult), url);
     function formatResult(result) {
          l.resolve(body.title + ': ' + body.description);
     }

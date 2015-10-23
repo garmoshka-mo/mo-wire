@@ -79,6 +79,7 @@ function Wire(customOptions) {
     self.mediator = function (callback, options) {
         var l = new Wire(options);
         l.failure(self.failure);
+        l.success(callback);
         return l;
     };
 
