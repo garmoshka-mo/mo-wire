@@ -12,7 +12,8 @@ Wire defined outside of function and then passed into.
 
 Purpose: 
 
-1. reduces code of asyc functions 
+1. allows to trace rejections (analog of `throw` in sync code)
+1. reduces code of async functions (no need to define promises)
 1. metaphor of "thrown wire" is easier for understanding, 
 than "chaining" which becomes a bit complicated at points, 
 when promises returned to error/success handlers and passed to following ones.
