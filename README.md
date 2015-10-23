@@ -139,9 +139,12 @@ l.failure(function(data){
 Constructor has optinal parameter: `new Wire(options)`
 
 options {}: 
-- branches: list of branch names to predefine
-- resultArg: 1 - Will take only argument with index 1 from `resolve(...)` as result
-- outputFailures: 'none' / 'uncaught' (default) / 'all'
+- `branches`: list of branch names to predefine
+- `resultArg`: 1 - Will take only argument with index 1 from `resolve(...)` as result
+- `outputFailures`: 'none' / 'uncaught' (default) / 'all'
+- `name`: Wire name - very useful for debug of deeply thrown rejections
+
+`options` - can be a string, then it will be treated as `options.name`
 
 ## Wire.defaults = to set global default options
 
@@ -152,6 +155,14 @@ and just set for whole library to await argument from exact place:
 require('mo-wire').defaults = { 
     resultArg: 1 
 };
+````
+
+## Rejections tracing
+
+If you set names to wire points, it will throw failure() where last argument will be object, e.g.:
+
+````
+'Undefined URL', { trace: ['get url', 'parse', 'Parsing test' ] }
 ````
 
 # ToDo

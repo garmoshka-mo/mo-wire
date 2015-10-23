@@ -10,7 +10,9 @@ function Wire(customOptions) {
                 options[k] = Wire.defaults[k];
             });
 
-    if (customOptions)
+    if (typeof customOptions == 'string')
+        options.name = customOptions;
+    else if (customOptions)
         Object.keys(customOptions)
             .map(function (k) {
                 options[k] = customOptions[k];
@@ -51,15 +53,25 @@ function Wire(customOptions) {
         isTerminated = true;
 
         failureResults = arguments;
+        setTrace(failureResults);
 
-        if (failureCallback) call(failureCallback, arguments);
+        if (failureCallback) call(failureCallback, failureResults);
 
         if (options.outputFailures == 'all' ||
             options.outputFailures == 'uncaught' && !failureCallback)
-            call(console.error, arguments);
+            call(console.error, failureResults);
 
         runQueue();
     };
+
+    function setTrace(args) {
+        var trace = args[args.length - 1].trace;
+        if (!trace) {
+            trace = [];
+            args[args['length']++] = {trace: trace};
+        }
+        trace.push(options.name || trace.length);
+    }
 
     self.failure = function(callback) {
         if (failureResults)
