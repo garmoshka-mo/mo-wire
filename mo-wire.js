@@ -106,6 +106,9 @@ function Wire(customOptions) {
             throw 'Conflict with Wire\'s method name: ' + key;
         }
 
+        if (!options) options = key;
+        else if (!options.name) options.name = key;
+
         var l = new Wire(options);
         self[key] = branches[key] = l;
         l.failure(self.reject);

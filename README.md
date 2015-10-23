@@ -163,7 +163,17 @@ require('mo-wire').defaults = {
 If you set names to wire points, it will throw failure() where last argument will be object, e.g.:
 
 ````
-'Undefined URL', { trace: ['get url', 'parse', 'Parsing test' ] }
+var l = Wire('Parsing test');
+
+checkSite(l.mediator(formatResult, 'checkSite'), 'site.com');
+
+function parse(l, domain) {
+    getAlexaRank(l.branch('get alexa rank'), domain);
+    getIndexPage(l.branch('get index page'), domain);
+}
+
+// If site.com index page inaccessible, we may get:
+'statusCode=500', { trace: ['get index page', 'checkSite', 'Parsing test'] }
 ````
 
 # ToDo
