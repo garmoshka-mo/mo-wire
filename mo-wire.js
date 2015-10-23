@@ -78,7 +78,7 @@ function Wire(customOptions) {
 
     self.mediator = function (callback, options) {
         var l = new Wire(options);
-        l.failure(self.failure);
+        l.failure(self.reject);
         l.success(callback);
         return l;
     };
@@ -96,7 +96,7 @@ function Wire(customOptions) {
 
         var l = new Wire(options);
         self[key] = branches[key] = l;
-        l.failure(self.failure);
+        l.failure(self.reject);
         l.success(checkBranchesCompletion);
 
         function checkBranchesCompletion() {
