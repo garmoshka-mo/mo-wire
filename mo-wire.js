@@ -41,6 +41,8 @@ function Wire(customOptions) {
             call(callback, successResults);
         else
             successCallback = callback;
+
+        runQueue();
     };
 
 
@@ -55,6 +57,8 @@ function Wire(customOptions) {
         if (options.outputFailures == 'all' ||
             options.outputFailures == 'uncaught' && !failureCallback)
             call(console.error, arguments);
+
+        runQueue();
     };
 
     self.failure = function(callback) {
@@ -72,11 +76,19 @@ function Wire(customOptions) {
         return typeof x === 'undefined';
     }
 
-    var branches = {}, branchesResults = {};
+    self.mediator = function (callback, options) {
+        var l = new Wire(options);
+        l.failure(self.failure);
+        return l;
+    };
+
+    var branches = {}, branchesCounter = 0, branchesResults = {};
     self.branch = function(key, options) {
         if (branches[key]) return branches[key];
 
-        if (self[key]) {
+        if (!key) {
+            key = branchesCounter++;
+        } else if (self[key]) {
             console.error('Conflict with Wire\'s method name: ' + key);
             throw 'Conflict with Wire\'s method name: ' + key;
         }
@@ -135,6 +147,33 @@ function Wire(customOptions) {
 
         doStep();
     };
+
+    var queue = [];
+    self.push = function(func) {
+        queue.push(arguments);
+    };
+
+    function runQueue() {
+        if (queue.length == 0) return;
+        setTimeout(shiftQueue, 0);
+    }
+
+    function shiftQueue() {
+        var a = queue.shift(), args = [],
+            func = a[0];
+        delete a[0];
+        Object.keys(a).map(function (k) {
+            args.push(a[k]);
+        });
+        if (queue.length == 0)
+            args.push(self);
+        else {
+            var b = new Wire();
+            b.success(shiftQueue);
+            args.push(b);
+        }
+        call(func, args);
+    }
 
     return self;
 }

@@ -1,6 +1,6 @@
 {
   "name": "mo-wire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "alternative for js promises. Wire defined outside of function and then passed into",
   "main": "mo-wire.js",
   "scripts": {

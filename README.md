@@ -88,12 +88,16 @@ So you can pass wire to functions, which awaits for traditional callback - and i
 
 - `resolve(...)` - triggers `success`, with any amount of arguments
 - `reject(...)` - triggers `failure`, with any amount of arguments
-- `branch('name', options)` - creates new Wire, which translates failure to parent immediately
-or accumulates resolutions of all branches to single parent's success. Second argument is options for this new wire (optional)
+- `branch(name, options)` - creates new Wire, which translates failure to parent immediately
+or accumulates resolutions of all branches to single parent's success. Second argument is options for this new wire. Both arguments are optional.
 - `branches('branch1', 'branch2', ...)` - to predefine list of branches at one step
+- `mediator(callback, options)` - creates new Wire, which translates failure to parent immediately
+or calls callback on success. Options are optional.
 - `success(function() {})`
 - `failure(function() {})` 
 
+- `push(func, arg1, arg2, ...)` - add task to the end of series queue. Queue will be launched once you set success(..) callback 
+- `mapInSeries`
 
 `resolve` and `reject` will trigger corresponding callback only once.
 
