@@ -50,7 +50,7 @@ This will ensure, that `success` won't trigger before all of them resolved.
 - once you created some branch - you can access it later at any point
 either with `l.branch('some')` or `l['some']`
 
-````
+````js
 var l = new Wire();
 l.branches('article', 'comments');
 
@@ -66,7 +66,7 @@ l.success(...);
 
 ## mediator
 
-````
+````js
 function getDataFromUrl(l, url) {
     download(l.mediator(formatResult), url);
     function formatResult(result) {
@@ -79,7 +79,7 @@ function getDataFromUrl(l, url) {
 
 ## mapInSeries
 
-````
+````js
 var l = new Wire();
 l.mapInSeries(postIds, function(postId) {
     posts.doHeavyCalculationOfRating(postId, someOptions, l);
@@ -92,7 +92,7 @@ l.success(function(results) {
 ## Wire instance - is function
 
 You can call wire instance itself - it is a function. This is equal:
-````
+````js
 l()
 l.resolve()
 ````
@@ -118,7 +118,7 @@ or calls callback on success. Options are optional.
 If `reject` already called, `resolve` won't do anything.
 But you can call `reject` after `resolve`, for example:
 
-````
+````js
 var l = new Wire();
 
 doSomethingAsync(l);
@@ -152,7 +152,7 @@ options {}:
 For example, when architecture of project uses
 such callbacks: `function (err, result)` - we are able to omit passing `branch('bla', { resultArg: 1 })` for each branch,
 and just set for whole library to await argument from exact place:
-````
+````js
 require('mo-wire').defaults = { 
     resultArg: 1 
 };
@@ -162,7 +162,7 @@ require('mo-wire').defaults = {
 
 If you set names to wire points, it will throw failure() where last argument will be object, e.g.:
 
-````
+````js
 var l = Wire('Parsing test');
 
 checkSite(l.mediator(formatResult, 'checkSite'), 'site.com');
